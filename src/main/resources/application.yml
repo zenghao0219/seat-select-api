@@ -1,0 +1,23 @@
+spring:
+  #分离配置文件
+  profiles:
+    active: dev
+  #热部署生效
+  devtools:
+    remote:
+      restart:
+        enabled: true
+    restart:
+    #设置重启的目录
+    # additional-paths: src/main/java
+    #classpath目录下的WEB-INF文件夹内容修改不重启
+      exclude: WEB-INF/**
+server:
+  port: 80
+  servlet:
+    context-path: /seats-controller
+## 该配置节点为独立的节点，有很多同学容易将这个配置放在spring的节点下，导致配置无法被识别
+mybatis:
+  mapper-locations: classpath:mapping/*.xml  #注意：一定要对应mapper映射xml文件的所在路径
+  type-aliases-package: com.zh.seat.model  # 注意：对应实体类的路径
+

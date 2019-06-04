@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zh.seat.mapper.SeatTempleteMapper">
+  <resultMap id="BaseResultMap" type="com.zh.seat.model.SeatTemplete">
+    <result column="id" jdbcType="INTEGER" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="price" jdbcType="DECIMAL" property="price" />
+    <result column="flag" jdbcType="CHAR" property="flag" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+  <insert id="insertTemplete"  useGeneratedKeys="true" keyProperty="seatTemplete.id" parameterType="com.zh.seat.model.SeatTemplete">
+    insert into ss_seat_templete (id,name,price,create_time,update_time,flag)
+    values(#{seatTemplete.id},#{seatTemplete.name},#{seatTemplete.price},now(),now(),#{seatTemplete.flag})
+    ON DUPLICATE KEY UPDATE name=VALUES(name),price=VALUES(price),create_time=now(),update_time=now();
+  </insert>
+  <select id="findByTempleteList" resultMap="BaseResultMap">
+    select * from ss_seat_templete WHERE flag = "0"
+  </select>
+  <update id="deleteTemplete">
+    update ss_seat_templete set flag = "1" WHERE id in
+    <foreach collection="idList" index="index" item="item" open="("
+             separator="," close=")">
+      #{item}
+    </foreach>
+  </update>
+  <select id="findTempleteById" resultMap="BaseResultMap">
+    select * from ss_seat_templete WHERE id =#{id}
+  </select>
+</mapper>

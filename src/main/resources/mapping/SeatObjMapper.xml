@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zh.seat.mapper.SeatObjMapper">
+  <resultMap id="BaseResultMap" type="com.zh.seat.model.SeatObj">
+    <result column="id" jdbcType="INTEGER" property="id" />
+    <result column="x" jdbcType="INTEGER" property="x" />
+    <result column="y" jdbcType="INTEGER" property="y" />
+    <result column="row" jdbcType="VARCHAR" property="row" />
+    <result column="col" jdbcType="VARCHAR" property="col" />
+    <result column="price" jdbcType="DECIMAL" property="price" />
+    <result column="type" jdbcType="VARCHAR" property="type" />
+    <result column="flag" jdbcType="CHAR" property="flag" />
+    <result column="templete_id" jdbcType="VARCHAR" property="templeteId" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <insert id="insertSeat">
+    insert into ss_seats (x, y,row,col,price,type,flag,templete_id,create_time,update_time)
+    values
+    <foreach collection="seatList" index="index" item="item" separator=",">
+      (
+       #{item.x},
+       #{item.y},
+       #{item.row},
+       #{item.col},
+       #{seatTemplete.price},
+       #{item.type},
+       #{item.flag},
+       #{seatTemplete.id},
+       now(),
+       now()
+       )
+    </foreach>
+  </insert>
+  <delete id="deleteByIdList" >
+    delete from ss_seats WHERE id in
+    <foreach collection="idList" index="index" item="item" open="("
+             separator="," close=")">
+      #{item}
+    </foreach>
+  </delete>
+  <select id="findByTempleteId" resultMap="BaseResultMap">
+    select * from ss_seats WHERE templete_id = #{templeteId}
+  </select>
+</mapper>
